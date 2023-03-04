@@ -1,0 +1,43 @@
+prefixes:
+  ex: http://www.example.com/
+  schema: https://schema.org/
+  mo: http://purl.org/ontology/mo/
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  dbo: https://dbpedia.org/ontology/
+  dbp: https://dbpedia.org/property/
+  dbpage: https://dbpedia.org/page/
+  geo: https://www.w3.org/2003/01/geo/wgs84_pos#
+
+mappings:
+  mines:
+    sources:
+      - [facilities_merged.csv~csv]
+    s: ex:$(facility_id)
+    po:
+    # namings
+      - [a, dbo:Mine]
+      - [rdfs:label, $(facility_name), en~lang]
+      - [dbo:alternativeName, $(facility_other_names), en~lang]
+
+    # dates
+      - [schema:startDate, $(production_start), xsd:gYear]
+      - [schema:endDAte, $(production_end), xsd:gYear]
+
+    # geodata
+      - [dbo:country, dbpage:$(country)]
+      - [dbo:area, $(AREA), xsd:float]
+      - [ex:concessionArea, $(concession_area_sq_km), xsd:float]
+      - [geo:geometry, $(geometry), xsd:float]
+
+    # commodities and equipment
+      - [ex:primaryCommodity, dbpage:$(primary_commodity)]
+      - [dbp:products, $(primary_commodity), en~lang]
+
+  ownership: 
+    sources: 
+      - [ownership.csv~csv]
+      s: ex:$(facility_id)
+      po:
+        - [dbo:owner, $(placeholder)]
+
+  production: 
