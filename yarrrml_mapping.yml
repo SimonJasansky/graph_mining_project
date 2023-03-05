@@ -31,7 +31,8 @@ mappings:
 
     # commodities and equipment
       - [ex:primaryCommodity, dbpage:$(primary_commodity)]
-      - [dbp:products, $(primary_commodity), en~lang]
+      - [dbp:products, $(commodities_products), en~lang]
+      - [dbp:equipment, $(facility_equipment), en~lang]
 
   ownership: 
     sources: 
@@ -40,4 +41,3 @@ mappings:
       po:
         - [dbo:owner, $(placeholder)]
 
-  production: 
