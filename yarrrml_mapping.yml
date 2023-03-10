@@ -1,5 +1,5 @@
 prefixes:
-  ex: http://www.example.com/
+  ex: http://www.example.org/
   schema: https://schema.org/
   mo: http://purl.org/ontology/mo/
   rdfs: http://www.w3.org/2000/01/rdf-schema#
@@ -24,7 +24,7 @@ mappings:
       - [schema:endDAte, $(production_end), xsd:gYear]
 
     # geodata
-      - [dbo:country, dbpage:$(country)]
+      - [dbo:country, ex:$(GID_0)]
       - [dbo:area, $(AREA), xsd:float]
       - [ex:concessionArea, $(concession_area_sq_km), xsd:float]
       - [geo:geometry, $(geometry), xsd:float]
@@ -34,10 +34,26 @@ mappings:
       - [dbp:products, $(commodities_products), en~lang]
       - [dbp:equipment, $(facility_equipment), en~lang]
 
+  countries: 
+    sources: 
+      - [countries.csv~csv]
+      s: ex:$(country_alpha_3)
+      po:
+        - [a, dbo:Country]
+        - [a, schema:Country]
+        - [rdfs:label, $(country_name), en~lang]
+
+  companies: 
+    sources: 
+      - [companies.csv~csv]
+      s: ex:$(company_iri)
+      po:
+        - [a, schema:Corporation]
+        - [rdfs:label, $(company), en~lang]
+
   ownership: 
     sources: 
       - [ownership.csv~csv]
       s: ex:$(facility_id)
       po:
         - [dbo:owner, $(placeholder)]
-
