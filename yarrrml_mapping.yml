@@ -1,5 +1,5 @@
 prefixes:
-  ex: http://www.example.org/
+  mine: http://www.mine-db.org/
   schema: https://schema.org/
   mo: http://purl.org/ontology/mo/
   rdfs: http://www.w3.org/2000/01/rdf-schema#
@@ -30,30 +30,30 @@ mappings:
       - [geo:geometry, $(geometry), xsd:float]
 
     # commodities and equipment
-      - [ex:primaryCommodity, dbpage:$(primary_commodity)]
+      - [ex:primaryCommodity, ex:$(primary_commodity)]
       - [dbp:products, $(commodities_products), en~lang]
       - [dbp:equipment, $(facility_equipment), en~lang]
 
   countries: 
     sources: 
       - [countries.csv~csv]
-      s: ex:$(country_alpha_3)
-      po:
-        - [a, dbo:Country]
-        - [a, schema:Country]
-        - [rdfs:label, $(country_name), en~lang]
+    s: ex:$(country_alpha_3)
+    po:
+      - [a, dbo:Country]
+      - [a, schema:Country]
+      - [rdfs:label, $(country_name), en~lang]
 
   companies: 
     sources: 
       - [companies.csv~csv]
-      s: ex:$(company_iri)
-      po:
-        - [a, schema:Corporation]
-        - [rdfs:label, $(company), en~lang]
+    s: ex:$(company_iri)
+    po:
+      - [a, schema:Corporation]
+      - [rdfs:label, $(company), en~lang]
 
   ownership: 
     sources: 
       - [ownership.csv~csv]
-      s: ex:$(facility_id)
-      po:
-        - [dbo:owner, $(placeholder)]
+    s: ex:$(facility_id)
+    po:
+      - [dbo:owner, $(company_iri)]
