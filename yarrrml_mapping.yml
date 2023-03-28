@@ -1,5 +1,5 @@
 prefixes:
-  ex: http://www.example.org/
+  mine: http://www.mine-db.org/
   schema: https://schema.org/
   mo: http://purl.org/ontology/mo/
   rdfs: http://www.w3.org/2000/01/rdf-schema#
@@ -36,7 +36,7 @@ mappings:
       # add here GADM 
 
     # commodities and equipment
-      - [ex:primaryCommodity, dbpage:$(primary_commodity)]
+      - [ex:primaryCommodity, ex:$(primary_commodity)]
       - [dbp:products, $(commodities_products), en~lang]
       - [dbp:equipment, $(facility_equipment), en~lang]
 
@@ -55,10 +55,10 @@ mappings:
   companies: 
     sources: 
       - [companies.csv~csv]
-      s: ex:$(company_iri)
-      po:
-        - [a, schema:Corporation]
-        - [rdfs:label, $(company), en~lang]
+    s: ex:$(company_iri)
+    po:
+      - [a, schema:Corporation]
+      - [rdfs:label, $(company), en~lang]
 
   # add relationship from mine to owning company
   ownership: 
