@@ -1,0 +1,6 @@
+Extract unique GADM regions, add to YARRRML, link mines to GADM regions
+Convert primary commodity in table facilities to material id, in order to be linked to commodities table
+Add reserves to YARRRML linking
+Add Production to YARRRML linking
+
+Done: 
