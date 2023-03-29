@@ -1,0 +1,130 @@
+prefixes:
+  ex: http://www.mine-db.org/
+  schema: https://schema.org/
+  mo: http://purl.org/ontology/mo/
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  dbo: https://dbpedia.org/ontology/
+  dbp: https://dbpedia.org/property/
+  dbpage: https://dbpedia.org/page/
+  geo: https://www.w3.org/2003/01/geo/wgs84_pos#
+
+
+# sources needed: 
+# facilities_merged.csv
+# ownership.csv
+# companies.csv
+# countries.csv
+# coal.csv
+# minerals.csv
+# commodities.csv
+# material_ids.csv
+
+mappings:
+
+  # add all mines
+  mines:
+    sources:
+      - [facilities_merged.csv~csv]
+    s: ex:$(facility_id)
+    po:
+    # namings
+      - [a, dbo:Mine]
+      - [schema:identifier, $(facility_id), en~lang]
+      - [rdfs:label, $(facility_name), en~lang]
+      - [dbo:alternativeName, $(facility_other_names), en~lang]
+
+    # dates
+      - [schema:startDate, $(production_start), xsd:gYear]
+      - [schema:endDAte, $(production_end), xsd:gYear]
+
+    # geodata
+      - [dbo:country, ex:$(GID_0)]
+      - [dbo:area, $(AREA), xsd:float]
+      - [ex:concessionArea, $(concession_area_sq_km), xsd:float]
+      - [geo:geometry, $(geometry), xsd:string]
+
+    # commodities and equipment
+      - [ex:primaryCommodity, ex:$(primary_commodity)]
+      - [dbp:products, $(commodities_products), en~lang]
+      - [dbp:equipment, $(facility_equipment), en~lang]
+
+  # add unique countries
+  countries: 
+    sources: 
+      - [countries.csv~csv]
+    s: ex:$(country_alpha_3)
+    po:
+      - [a, dbo:Country]
+      - [a, schema:Country]
+      - [dbo:iso6392Code, $(country_alpha_3), en~lang]
+      - [rdfs:label, $(country_name), en~lang]
+
+  # add unique companies
+  companies: 
+    sources: 
+      - [companies.csv~csv]
+    s: ex:$(company_iri)
+    po:
+      - [a, schema:Corporation]
+      - [rdfs:label, $(company), en~lang]
+
+  # add relationship from mine to owning company
+  ownership: 
+    sources: 
+      - [ownership.csv~csv]
+    s: ex:$(facility_id)
+    po:
+      - [dbo:owner, ex:$(company_iri)]
+
+  # add all materials
+  materials: 
+    sources: 
+      - [material_ids.csv~csv]
+    s: ex:$(material_id)
+    po:
+      - [schema:identifier, $(material_id)]
+      - [rdfs:label, $(material_name), en~lang]
+      - [schema:category, $(material_category), en~lang]
+      - [schema:category, $(material_category_2), en~lang]
+
+  # add production of Minerals
+  production_minerals: 
+    sources: 
+      - [minerals.csv~csv]
+    # not sure if this construction works, but the idea is to have facility,
+    # followed by hashtag to get proudction in that year
+    s: ex:$(facility_id)#$(year)#$(material)#$(type)
+    po:
+      - [schema:material, ed:$(material)]
+      - [dbp:year, $(year), xsd:gYear]
+      - [dbp:producedBy, ex:$(facility_id)]
+      - [dbp:quantity, $(value_tonnes), xsd:float]
+      - [dbo:type, $(type)]
+
+  # add production of Coal
+  production_coal: 
+    sources: 
+      - [coal.csv~csv]
+    # not sure if this construction works, but the idea is to have facility,
+    # followed by hashtag to get proudction in that year
+    s: ex:$(facility_id)#$(year)#$(material)#$(type)
+    po:
+      - [schema:material, ex:$(material)]
+      - [dbp:year, $(year), xsd:gYear]
+      - [dbp:producedBy, ex:$(facility_id)]
+      - [dbp:quantity, $(value_tonnes), xsd:float]        
+      - [dbo:type, $(type)]
+
+  # add production of commodities
+  production_commodities: 
+    sources: 
+    - [commodities.csv~csv]
+    # not sure if this construction works, but the idea is to have facility,
+    # followed by hashtag to get proudction in that year
+    s: ex:$(facility_id)#$(year)#$(material)#$(commodity)
+    po:
+      - [schema:material, ex:$(commodity)]
+      - [dbp:related, ex:$(material)]
+      - [dbp:year, $(year), xsd:gYear]
+      - [dbp:producedBy, ex:$(facility_id)]
+      - [dbp:quantity, $(value_tonnes), xsd:float]
