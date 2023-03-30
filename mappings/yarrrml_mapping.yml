@@ -44,7 +44,7 @@ mappings:
       - [geo:geometry, $(geometry), xsd:string]
 
     # commodities and equipment
-      - [ex:primaryCommodity, ex:$(primary_commodity)]
+      - [ex:primaryCommodity, $(primary_commodity)]
       - [dbp:products, $(commodities_products), en~lang]
       - [dbp:equipment, $(facility_equipment), en~lang]
 
