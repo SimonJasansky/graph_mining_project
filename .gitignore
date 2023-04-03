@@ -5,5 +5,5 @@ linking_triples/target_graph1
 linking_triples/target_graph2
 linking_triples/target_graph3
 linking_triples/target_graph4
-misc
+misc/
 output/rdf-triples.ttl
