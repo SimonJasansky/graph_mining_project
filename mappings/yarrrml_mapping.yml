@@ -128,3 +128,11 @@ mappings:
       - [dbp:year, $(year), xsd:gYear]
       - [dbp:producedBy, ex:$(facility_id)]
       - [dbp:quantity, $(value_tonnes), xsd:float]
+
+  # add gadm region
+  gadm: 
+    sources: 
+      - [gadm.csv~csv]
+    s: ex:$(facility_id)
+    po:
+      - [ex:located_in_gadm, $(GID)]
